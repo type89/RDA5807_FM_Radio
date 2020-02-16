@@ -346,8 +346,7 @@ void loop() {
       }
       //Serial.println("mode ==> " + String(mode));
       set_mode_oled(mode);
-      //delay(500);
-    }
+     }
     // Remember last button press event
     lastButtonPress = millis();
   }
