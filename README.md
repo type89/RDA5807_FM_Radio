@@ -7,4 +7,4 @@
  - ケースはダイソーのはがきケース＋セリアのまな板＋セリアのウッドシェルフ
  - スピーカーはダイソーの300円スピーカー
  - そのままでは低音が物足りないので、RDA5807MのBasboostを有効にしました。
- - [Arduino FM Radio with RDA5807M](https://youtu.be/5IwghslCPcE)
+ - [Arduino FM Radio with RDA5807M](https://www.youtube.com/watch?v=fRKgmpn8XOc)
