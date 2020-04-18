@@ -5,9 +5,9 @@
 #include <Adafruit_SSD1306.h>
 #include <radio.h>
 #include <RDA5807M.h>
-#define FIX_BAND     RADIO_BAND_FMWORLD //RADIO_BAND_FM    //Radio Band -FM
-#define FIX_VOLUME   5               //Audio Volume Level 5.
-#define FIX_STATION  7800 //10050            //Station Tuned = 100.50 MHz.
+#define FIX_BAND     RADIO_BAND_FMWORLD
+#define FIX_VOLUME   12
+#define FIX_STATION  7800
 
 #define OLED_RESET 4
 Adafruit_SSD1306 display(OLED_RESET);
@@ -18,27 +18,24 @@ Adafruit_SSD1306 display(OLED_RESET);
 
 float channel = -0.5;
 float catv_channel = -0.5;
+int freq = 7800;
 int mode = 1;
+//int flag = 0;
 unsigned long lastButtonPress = 0;
+
 Encoder myEnc(2, 3);
 RDA5807M radio;   
 
 void setup()   {                
-  Serial.begin(9600);
-  Serial.println("FM Radio");
+  //Serial.begin(9600);
   radio.init();
   radio.debugEnable();
   pinMode(SW, INPUT_PULLUP); 
-  //radio.setBandFrequency(FIX_BAND, FIX_STATION);
   radio.setVolume(FIX_VOLUME);
   radio.setMono(false);
   radio.setMute(false);
-  radio.setBassBoost(true);
-  // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 128x32)
-  //display.display();
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
 
-   // Clear the buffer.
   display.clearDisplay();
   display.setTextSize(2);
   display.setTextColor(WHITE);
@@ -54,267 +51,206 @@ long oldPosition  = -999;
 
 void set_channel(float channel) {
   String station;
-  int freq;
-  int channel_no = int(channel);
-  //Serial.println("channel_n==>" + String(channel_no));
-  switch (channel_no) {
+  switch (int(channel)) {
   case 0:
     station = "bayFM";
     freq = 7800;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;
   case 1:
     station = "NHK_CB";
     freq = 8070;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;
   case 2:
     station = "MiniFM";
     freq = 8760;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;
   case 3:
     station = "Nack5";
     freq = 7950;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break; 
   case 4:
     station = "TokyoFM";
     freq = 8000;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;
   case 5:
     station = "J-WAVE";
     freq = 8130;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;
   case 6:
     station = "NHK_TK";
     freq = 8250;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;
   case 7:
     station = "Yokohama";
     freq = 8470;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;
   case 8:
     station = "Tokyo_TM";
     freq = 8660;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break; 
   case 9:
     station = "InterFM";
-    freq = 8970;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
+    freq= 8970;
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;    
   case 10:
     station = "TBS_Radio";
     freq = 9050;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;
   case 11:
     station = "QR";
     freq = 9160;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break; 
   case 12:
     station = "RF";
     freq = 9240;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break; 
   case 13:
     station = "Nippon";
     freq = 9300;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break; 
   case 14:
     station = "Ichihara";
     freq = 7670;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break; 
   case 15:
     station = "FM Fuji";
     freq = 7860;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break; 
-  default:
-    Serial.println("case==>" + String(channel_no));
-    // どのcaseにも一致しなかったとき実行される
   }
   return;
 }
 
 void set_catv_channel(float catv_channel) {
   String station;
-  int freq;
   int channel_no = int(catv_channel);
-  //Serial.println("channel_n==>" + String(channel_no));
   switch (channel_no) {
   case 0:
     station = "C_InterFM";
     freq = 7750;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break; 
   case 1:
     station = "C_NHK1";
     freq = 7830;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;    
   case 2:
     station = "C_bayFM";
     freq = 7890;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;    
   case 3:
     station = "C_TokyoFM";
     freq = 8030;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break; 
   case 4:
     station = "C_Nack5";
     freq = 8100;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break; 
   case 5:
     station = "C_NHK2";
     freq = 8160;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;    
   case 6:
     station = "C_EEW";
     freq = 8210;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;    
   case 7:
     station = "C_NHK_FM";
     freq = 8310;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;
   case 8:
     station = "C_J-WAVE";
     freq = 8370;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break; 
   case 9:
     station = "C_Yokohama";
     freq = 8430;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;    
   case 10:
     station = "C_TBS";
     freq = 8500;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;    
   case 11:
     station = "C_QR";
     freq = 8600;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;    
   case 12:
     station = "C_Nippon";
     freq = 8650;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break; 
   case 13:
     station = "C_RF";
     freq = 8700;
-    Serial.println("case==>" + String(channel_no));
-    Serial.println(station);
     radio.setBandFrequency(FIX_BAND, freq);
     set_oled(station, freq);
     break;    
-  default:
-    Serial.println("case==>" + String(channel_no));
-    // どのcaseにも一致しなかったとき実行される
   }
+  return;
+}
+
+
+void set_manual_tunig(int freq) {
+  String station = "Tuning..";
+  radio.setBandFrequency(FIX_BAND, freq);
+  if((freq % 10) == 0){
+      set_oled(station, freq);
+    } 
   return;
 }
 
@@ -328,7 +264,7 @@ void set_oled(String station, int freq){
     display.println(station);
     display.setCursor(0, 17);
     float float_freq = float(freq) / 100;
-    
+    //Serial.println(float_freq);
     display.println(String(float_freq) + "MHz");
     display.display();   
 }
@@ -348,35 +284,39 @@ void set_mode_oled(int mode){
         display.setCursor(0, 17);  
         display.println("CATV");  
       }
+    if(mode == 3){
+        display.setCursor(0, 17);  
+        display.println("Tuning");  
+      }
     display.display();   
 }
+
 void loop() {
   
   int btnState = digitalRead(SW);
-
-  //If we detect LOW signal, button is pressed
   if (btnState == LOW) {
-    //if 50ms have passed since last LOW pulse, it means that the
-    //button has been pressed, released and pressed again
     if (millis() - lastButtonPress > 50) {
-      //Serial.println("Button pressed!");
-      if(mode == 1){
+      switch (mode) {
+      case 1:
         mode = 2;
         catv_channel = float(int(catv_channel)) - 0.5;
-      }
-      else{
+        break;  
+      case 2:
+        mode = 3;
+        break;  
+      case 3:
         mode = 1;
         channel = float(int(channel)) - 0.5;
+        break;  
       }
       //Serial.println("mode ==> " + String(mode));
       set_mode_oled(mode);
      }
-    // Remember last button press event
     lastButtonPress = millis();
   }
    
   long newPosition = myEnc.read();
-
+  
   if (newPosition != oldPosition) {
     if(newPosition > oldPosition){
       if(mode == 1){
@@ -389,6 +329,12 @@ void loop() {
         catv_channel = catv_channel + 0.5;
        if(catv_channel> 13.5){
           catv_channel = -0.5;  
+          }
+      }
+      if(mode == 3){
+        freq = freq + 5;
+       if(freq > 10800){
+          freq = 7600;  
           }
       }
     }else if(newPosition < oldPosition){
@@ -404,14 +350,24 @@ void loop() {
           catv_channel = 13.5;
         }  
       }
+      if(mode == 3){
+        freq = freq -5;
+       if(freq < 7600){
+          freq = 10800;  
+          }
+      }
     }
     oldPosition = newPosition;
     //Serial.println("newPosition ==> " + String(newPosition));
+    //Serial.println("flag ==> " + String(flag));
     if(mode == 1){
       set_channel(channel);
       }
     if(mode == 2){
       set_catv_channel(catv_channel);
+      }
+    if(mode == 3){
+      set_manual_tunig(freq);
       }
   }
 }
